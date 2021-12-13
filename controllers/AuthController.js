@@ -1,6 +1,5 @@
 const Usuario = require("../models/usuario");
 
-const { request, response } = require("express");
 const {
   encriptarPassword,
   comparePassword,

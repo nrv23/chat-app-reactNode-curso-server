@@ -13,7 +13,12 @@ const obtenerChat = async (req, res) => {
     })
       .sort({ createdAt: "desc" })
       .limit(30);
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      msg: "Error interno de servidor",
+    });
+  }
 };
 
 module.exports = {
