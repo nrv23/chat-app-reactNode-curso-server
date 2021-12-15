@@ -23,6 +23,17 @@ const generarToken = (usuario) => {
   });
 };
 
+const comprobarJWT = (token = "") => {
+  try {
+    const { id } = jwt.verify(token, process.env.CLAVESECRETA);
+
+    return [true, id];
+  } catch (error) {
+    console.log(error);
+    return [false, null];
+  }
+};
 module.exports = {
   generarToken,
+  comprobarJWT,
 };
