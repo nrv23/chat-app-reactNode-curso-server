@@ -10,7 +10,7 @@ const connDB = async () => {
       useUnifiedTopology: true,
     });
 
-    console.log("Ha conectado con la bd"); //
+    console.log("Ha conectado con la bd"); //prueba de rama diferente
   } catch (error) {
     console.log("error al intentar conectar ", error);
     throw new Error("Error al conectar la base de datos");
