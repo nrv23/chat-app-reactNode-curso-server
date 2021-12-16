@@ -1,6 +1,7 @@
 const {
   usuarioConectado,
   usuarioDesconectado,
+  getUsuarios,
 } = require("../controllers/SocketController");
 const { comprobarJWT } = require("../helper/generarToken");
 
@@ -32,6 +33,8 @@ class Sockets {
       // saber cual usuario está activo
 
       //emitir todos los usuarios conectados
+
+      this.io.emit("lista-usuarios", await getUsuarios());
       //unirme a una sala especifica de chat: Socket Join
 
       //escuchar cuando un cliente envia un mensjae
@@ -44,6 +47,7 @@ class Sockets {
       socket.on("disconnect", async () => {
         console.log("Cliente desconectado", id);
         await usuarioDesconectado(id);
+        this.io.emit("lista-usuarios", await getUsuarios());
       });
     });
   }

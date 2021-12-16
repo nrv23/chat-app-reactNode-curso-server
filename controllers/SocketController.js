@@ -24,7 +24,18 @@ const usuarioDesconectado = async (id) => {
   }
 };
 
+const getUsuarios = async () => {
+  try {
+    const usuarios = await Usuario.find().sort("-Online");
+
+    return usuarios;
+  } catch (error) {
+    return error;
+  }
+};
+
 module.exports = {
   usuarioConectado,
   usuarioDesconectado,
+  getUsuarios,
 };
