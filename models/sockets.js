@@ -2,6 +2,7 @@ const {
   usuarioConectado,
   usuarioDesconectado,
   getUsuarios,
+  agregarMensaje
 } = require("../controllers/SocketController");
 const { comprobarJWT } = require("../helper/generarToken");
 
@@ -35,10 +36,32 @@ class Sockets {
       //emitir todos los usuarios conectados
 
       this.io.emit("lista-usuarios", await getUsuarios());
+
       //unirme a una sala especifica de chat: Socket Join
 
+      socket.join(id); // unir usuarios a una sala de chat. El nombre va ser propio de cada id y nunca va cambiar
+      // cada vez que un usuario se conecta se une a una sala para luego al enviar un mensaje a otro usuario, unir ese otro usuario 
+      // a la misma sala
+    
       //escuchar cuando un cliente envia un mensjae
+      socket.on('mensaje-personal', async (msg,cb) => {
+        const nuevoMensaje = await agregarMensaje(msg);
+        console.log(nuevoMensaje)
+          if(nuevoMensaje) {
+            //cb(msg);
+            this.io.to(msg.para).emit('mensaje-personal',nuevoMensaje); // emitir la respuesta solamente en la sala de chat donde 
+            //estan ubicados los usuarios
+            this.io.to(msg.de).emit('mensaje-personal',nuevoMensaje)
+          } else {
+            //cb(null);
+            this.io.to(msg.para).emit('mensaje-personal',null);
 
+          } 
+
+          //emitir respuesta 
+
+          
+      })
       //manejar el disconnect
 
       //marcar que el usuario se desconectó
